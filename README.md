@@ -8,9 +8,6 @@ zhimi.humidifier.ca1.
 	"WaterLevel": {},
 	"LockPhysicalControls": {},
 	"SwingMode": {},
-    "TargetHeatingCoolingState": {
-        "validValues": [0, 1, 3]
-    },
     "CurrentHumidifierDehumidifierState": {
         "validValues": [0, 2]
     },
