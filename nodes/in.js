@@ -66,7 +66,7 @@ module.exports = function (RED) {
             return new Promise(function (resolve, reject) {
                 if (force) {
                     if (node.device !== null) {
-                        node.device.call("get_prop", ["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode"], [])
+                        node.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode"])
                             .then(device => {
                                 node.send({
                                     'payload': node.formatHomeKit(device)
@@ -91,40 +91,40 @@ module.exports = function (RED) {
         formatHomeKit(result) {
             var msg = {};
 
-            if (result[0] === "on") {
+            if (result.power === "on") {
                 msg.Active = 1;
                 msg.CurrentHumidifierDehumidifierState = 2;
-            } else if (result[0] === "off") {
+            } else if (result.power === "off") {
                 msg.Active = 0;
                 msg.CurrentHumidifierDehumidifierState = 0;
             }
-            if (result[2] === "on") {
+            if (result.child_lock === "on") {
                 msg.LockPhysicalControls = 1;
-            } else if (result[2] === "off") {
+            } else if (result.child_lock === "off") {
                 msg.LockPhysicalControls = 0;
             }
-            if (result[3] === "on") {
+            if (result.dry === "on") {
                 msg.SwingMode = 1;
-            } else if (result[3] === "off") {
+            } else if (result.dry === "off") {
                 msg.SwingMode = 0;
             }
 
-            if (result[6] === "auto") {
+            if (result.mode === "auto") {
                 msg.RotationSpeed = 25;
-            } else if (result[6] === "silent") {
+            } else if (result.mode === "silent") {
                 msg.RotationSpeed = 50;
-            } else if (result[6] === "medium") {
+            } else if (result.mode === "medium") {
                 msg.RotationSpeed = 75;
-            } else if (result[6] === "high") {
+            } else if (result.mode === "high") {
                 msg.RotationSpeed = 100;
             } else {
                 msg.RotationSpeed = 0;
             }
 
-            msg.WaterLevel = Math.ceil(result[4] / 1.2);
-            msg.CurrentRelativeHumidity = result[1];
+            msg.WaterLevel = Math.ceil(result.depth / 1.2);
+            msg.CurrentRelativeHumidity = result.humidity;
             msg.TargetHumidifierDehumidifierState = 1;
-            msg.RelativeHumidityHumidifierThreshold = result[5];
+            msg.RelativeHumidityHumidifierThreshold = result.limit_hum;
 
             return msg;
         }
