@@ -43,17 +43,17 @@ module.exports = function (RED) {
 
                 if (isSet(payload.Active)) {
                     var value = payload.Active;
-                    node.device.call("set_power", [Boolean(value) ? "on" : "off"])
+                    node.device.call("set_power", [Boolean(value) ? "on" : "off"]);
                 }
 
                 if (isSet(payload.SwingMode)) {
                     var value = payload.SwingMode;
-                    node.device.call("set_dry", [Boolean(value) ? "on" : "off"])
+                    node.device.call("set_dry", [Boolean(value) ? "on" : "off"]);
                 }
 
                 if (isSet(payload.LockPhysicalControls)) {
                     var value = payload.LockPhysicalControls;
-                    node.device.call("set_child_lock", [Boolean(value) ? "on" : "off"])
+                    node.device.call("set_child_lock", [Boolean(value) ? "on" : "off"]);
                 }
 
                 if (isSet(payload.RotationSpeed)) {
