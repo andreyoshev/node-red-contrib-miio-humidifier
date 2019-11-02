@@ -1,5 +1,9 @@
 const miio = require('miio');
 
+function isSet(value) {
+    return typeof value !== 'undefined' && value != null;
+}
+
 module.exports = function (RED) {
     class MiioHumidifierInput {
         constructor(n) {
@@ -20,7 +24,7 @@ module.exports = function (RED) {
 
                 node.refreshStatusTimer = setInterval(function () {
                     node.getStatus(true);
-                }, 10000);
+                }, 15000);
             }
         }
 
@@ -65,7 +69,13 @@ module.exports = function (RED) {
 
             return new Promise(function (resolve, reject) {
                 if (force) {
-                    if (node.device !== null) {
+                    if (isSet(node.device)) {
+                        node.status({
+                            fill: "green",
+                            shape: "dot",
+                            text: "Connected."
+                        });
+
                         node.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode"])
                             .then(device => {
                                 node.send({
@@ -79,6 +89,12 @@ module.exports = function (RED) {
                                 reject(err);
                             });
                     } else {
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: "Disconnected."
+                        });
+
                         node.connect();
                         reject('No device');
                     }

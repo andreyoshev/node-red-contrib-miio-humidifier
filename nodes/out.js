@@ -13,13 +13,19 @@ module.exports = function (RED) {
             node.config = config;
             node.payload = config.payload;
 
-            node.connect().then(result => {
-
-            });
+            node.connect();
 
             this.on('input', function (message) {
-                if (!node.device) {
-                    console.log('NO DEVICE FOUND');
+                if (!isSet(node.device)) {
+                    console.log('No device');
+                    node.connect();
+
+                    node.status({
+                        fill: "red",
+                        shape: "dot",
+                        text: "No device."
+                    });
+
                     return;
                 }
 
