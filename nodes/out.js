@@ -47,6 +47,11 @@ module.exports = function (RED) {
                     node.device.call("set_limit_hum", [value]);
                 }
 
+                if (isSet(payload.Buzzer)) {
+                    var value = payload.Buzzer;
+                    node.device.call("set_buzzer", [Boolean(value) ? "on" : "off"]);
+                }
+
                 if (isSet(payload.Active)) {
                     var value = payload.Active;
                     node.device.call("set_power", [Boolean(value) ? "on" : "off"]);
