@@ -1,36 +1,36 @@
 [
   {
-    "id": "2f41a631.e3751a",
+    "id": "536c551b.920b6c",
     "type": "miio-humidifier-input",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "outputAtStartup": true,
     "for_homekit": true,
-    "x": 220,
-    "y": 1280,
+    "x": 400,
+    "y": 240,
     "wires": [
       [
-        "f1415426.662638",
-        "5554cd53.884264",
-        "a05c1eff.35cdb",
-        "77183309.60923c",
-        "c8b47573.74dc58",
-        "589e2256.4d3f3c",
-        "a25198d9.fb0928",
-        "388fe986.009fc6",
-        "ee2804b0.9758f8",
-        "d41d1abf.58ace8",
-        "7cef9b96.2f33e4",
-        "f84083f4.4d3a5",
-        "80369f44.f2a63"
+        "85df4aef.ce84a8",
+        "e0830568.fdf298",
+        "a5cb9666.1f5558",
+        "b512ba71.bf7ee8",
+        "13026079.d70ab",
+        "5d6d4340.2d9c5c",
+        "b4b64083.f85b1",
+        "46eba54d.82738c",
+        "16d2d6a9.5b63d9",
+        "3d213c40.f28894",
+        "f1ea8113.0eeca",
+        "df01748b.271ae8",
+        "2d37c5cf.a51a4a"
       ]
     ]
   },
   {
-    "id": "5554cd53.884264",
+    "id": "e0830568.fdf298",
     "type": "homekit-service",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "isParent": true,
     "bridge": "80c270f3.b5484",
     "accessoryCategory": "AIR_HUMIDIFIER",
@@ -63,17 +63,19 @@
     "cameraConfigDebug": false,
     "cameraConfigSnapshotOutput": "disabled",
     "characteristicProperties": "{\n\t\"Active\": {},\n\t\"CurrentRelativeHumidity\" : {},\n\t\"WaterLevel\": {},\n\t\"LockPhysicalControls\": {},\n\t\"SwingMode\": {},\n    \"CurrentHumidifierDehumidifierState\": {\n        \"validValues\": [0, 2]\n    },\n    \"TargetHumidifierDehumidifierState\": {\n        \"validValues\": [1]\n    }, \n    \"RelativeHumidityHumidifierThreshold\": {\n    \t\"minValue\": 0,\n        \"maxValue\": 100,\n        \"minStep\": 10\n    },\n    \"RotationSpeed\": {\n        \"minValue\": 0,\n         \"maxValue\": 100,\n         \"minStep\": 25\n    }\n}",
-    "x": 590,
-    "y": 1280,
+    "x": 770,
+    "y": 240,
     "wires": [
-      [],
+      [
+        "373b5cba.078434"
+      ],
       []
     ]
   },
   {
-    "id": "46628f71.6c633",
+    "id": "12f60743.1f27e9",
     "type": "homekit-service",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "isParent": true,
     "bridge": "80c270f3.b5484",
     "accessoryCategory": "SENSOR",
@@ -106,34 +108,34 @@
     "cameraConfigDebug": false,
     "cameraConfigSnapshotOutput": "disabled",
     "characteristicProperties": "{}",
-    "x": 590,
-    "y": 1340,
+    "x": 770,
+    "y": 300,
     "wires": [
       [],
       []
     ]
   },
   {
-    "id": "f1415426.662638",
+    "id": "85df4aef.ce84a8",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = {\"CurrentTemperature\":(msg.status.temp_dec)/10};\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1340,
+    "x": 655,
+    "y": 300,
     "wires": [
       [
-        "46628f71.6c633"
+        "12f60743.1f27e9"
       ]
     ],
     "l": false
   },
   {
-    "id": "a05c1eff.35cdb",
+    "id": "a5cb9666.1f5558",
     "type": "debug",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "active": true,
     "tosidebar": true,
@@ -141,14 +143,14 @@
     "tostatus": false,
     "complete": "true",
     "targetType": "full",
-    "x": 570,
-    "y": 1160,
+    "x": 750,
+    "y": 120,
     "wires": []
   },
   {
-    "id": "65c949fa.3bf7d8",
+    "id": "e143f582.cd2e58",
     "type": "ui_text",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "group": "569fc258.a9b43c",
     "order": 7,
     "width": 0,
@@ -157,14 +159,14 @@
     "label": "Temperature",
     "format": "{{msg.payload}} °C",
     "layout": "row-spread",
-    "x": 610,
-    "y": 1560,
+    "x": 790,
+    "y": 520,
     "wires": []
   },
   {
-    "id": "2b4d7a45.cd78b6",
+    "id": "197d70bc.d0e4cf",
     "type": "ui_text",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "group": "569fc258.a9b43c",
     "order": 5,
     "width": "2",
@@ -173,14 +175,14 @@
     "label": "",
     "format": "{{msg.payload}} %",
     "layout": "row-spread",
-    "x": 620,
-    "y": 1620,
+    "x": 800,
+    "y": 580,
     "wires": []
   },
   {
-    "id": "e44d8555.aed5b8",
+    "id": "6aa55725.ccb6a8",
     "type": "ui_numeric",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "Limit humidity",
     "label": "",
     "tooltip": "Limit humidity",
@@ -195,18 +197,18 @@
     "min": "40",
     "max": "80",
     "step": "1",
-    "x": 620,
-    "y": 1680,
+    "x": 800,
+    "y": 640,
     "wires": [
       [
-        "960170b2.6dcec"
+        "a80df1b8.03d1c"
       ]
     ]
   },
   {
-    "id": "960170b2.6dcec",
+    "id": "a80df1b8.03d1c",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -218,53 +220,53 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 775,
-    "y": 1680,
+    "x": 955,
+    "y": 640,
     "wires": [
       [
-        "1b22f4ef.27fdfb"
+        "177bba93.115c85"
       ]
     ],
     "l": false
   },
   {
-    "id": "589e2256.4d3f3c",
+    "id": "5d6d4340.2d9c5c",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = (msg.status.temp_dec/10).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload+'℃'});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1560,
+    "x": 655,
+    "y": 520,
     "wires": [
       [
-        "65c949fa.3bf7d8"
+        "e143f582.cd2e58"
       ]
     ],
     "l": false
   },
   {
-    "id": "a25198d9.fb0928",
+    "id": "b4b64083.f85b1",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.humidity;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1620,
+    "x": 655,
+    "y": 580,
     "wires": [
       [
-        "2b4d7a45.cd78b6"
+        "197d70bc.d0e4cf"
       ]
     ],
     "l": false
   },
   {
-    "id": "143b07de.d54528",
+    "id": "f65dac3f.1758d",
     "type": "ui_text",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "group": "569fc258.a9b43c",
     "order": 6,
     "width": 0,
@@ -273,48 +275,48 @@
     "label": "Water Level",
     "format": "{{msg.payload}} %",
     "layout": "row-spread",
-    "x": 610,
-    "y": 1740,
+    "x": 790,
+    "y": 700,
     "wires": []
   },
   {
-    "id": "ee2804b0.9758f8",
+    "id": "16d2d6a9.5b63d9",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = Math.round(msg.status.depth/1.2);\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1740,
+    "x": 655,
+    "y": 700,
     "wires": [
       [
-        "143b07de.d54528"
+        "f65dac3f.1758d"
       ]
     ],
     "l": false
   },
   {
-    "id": "388fe986.009fc6",
+    "id": "46eba54d.82738c",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.limit_hum;\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1680,
+    "x": 655,
+    "y": 640,
     "wires": [
       [
-        "e44d8555.aed5b8"
+        "6aa55725.ccb6a8"
       ]
     ],
     "l": false
   },
   {
-    "id": "de28f611.40b7f8",
+    "id": "a73f61ee.6534a",
     "type": "ui_text",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "group": "569fc258.a9b43c",
     "order": 3,
     "width": "3",
@@ -323,14 +325,14 @@
     "label": "Humidity",
     "format": "",
     "layout": "row-spread",
-    "x": 800,
-    "y": 1620,
+    "x": 980,
+    "y": 580,
     "wires": []
   },
   {
-    "id": "2d5b6998.caaf56",
+    "id": "2a97d597.5c2c0a",
     "type": "ui_switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Power",
     "tooltip": "",
@@ -350,35 +352,35 @@
     "offvalueType": "bool",
     "officon": "",
     "offcolor": "",
-    "x": 590,
-    "y": 1440,
+    "x": 770,
+    "y": 400,
     "wires": [
       [
-        "da221c47.ee994"
+        "2bb902bd.5cc2ce"
       ]
     ]
   },
   {
-    "id": "77183309.60923c",
+    "id": "b512ba71.bf7ee8",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.power=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1440,
+    "x": 655,
+    "y": 400,
     "wires": [
       [
-        "2d5b6998.caaf56"
+        "2a97d597.5c2c0a"
       ]
     ],
     "l": false
   },
   {
-    "id": "fc93094d.a46ac8",
+    "id": "a8245c6f.9ad46",
     "type": "ui_switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Child Lock",
     "tooltip": "",
@@ -398,35 +400,35 @@
     "offvalueType": "bool",
     "officon": "",
     "offcolor": "",
-    "x": 610,
-    "y": 1800,
+    "x": 790,
+    "y": 760,
     "wires": [
       [
-        "81111f32.83575"
+        "a4cc67ce.3c0dc8"
       ]
     ]
   },
   {
-    "id": "d41d1abf.58ace8",
+    "id": "3d213c40.f28894",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.child_lock=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1800,
+    "x": 655,
+    "y": 760,
     "wires": [
       [
-        "fc93094d.a46ac8"
+        "a8245c6f.9ad46"
       ]
     ],
     "l": false
   },
   {
-    "id": "a5379f1b.cdf99",
+    "id": "12564d0f.947903",
     "type": "ui_dropdown",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Mode",
     "tooltip": "",
@@ -460,35 +462,35 @@
     ],
     "payload": "",
     "topic": "",
-    "x": 590,
-    "y": 1500,
+    "x": 770,
+    "y": 460,
     "wires": [
       [
-        "8284fee.32d5"
+        "7e717645.742958"
       ]
     ]
   },
   {
-    "id": "c8b47573.74dc58",
+    "id": "13026079.d70ab",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.mode;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1500,
+    "x": 655,
+    "y": 460,
     "wires": [
       [
-        "a5379f1b.cdf99"
+        "12564d0f.947903"
       ]
     ],
     "l": false
   },
   {
-    "id": "7e8da426.9e63cc",
+    "id": "6b68b6d5.0dcd58",
     "type": "ui_switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Sound",
     "tooltip": "",
@@ -508,52 +510,52 @@
     "offvalueType": "bool",
     "officon": "",
     "offcolor": "",
-    "x": 590,
-    "y": 1860,
+    "x": 770,
+    "y": 820,
     "wires": [
       [
-        "f5b3cdd.241403"
+        "578466dd.9300d8"
       ]
     ]
   },
   {
-    "id": "7cef9b96.2f33e4",
+    "id": "f1ea8113.0eeca",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.buzzer=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1860,
+    "x": 655,
+    "y": 820,
     "wires": [
       [
-        "7e8da426.9e63cc"
+        "6b68b6d5.0dcd58"
       ]
     ],
     "l": false
   },
   {
-    "id": "f84083f4.4d3a5",
+    "id": "df01748b.271ae8",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = parseInt(msg.status.led_b);\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1920,
+    "x": 655,
+    "y": 880,
     "wires": [
       [
-        "e053a4ca.19a9d8"
+        "9d3d5f68.103e1"
       ]
     ],
     "l": false
   },
   {
-    "id": "e053a4ca.19a9d8",
+    "id": "9d3d5f68.103e1",
     "type": "ui_dropdown",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Led Brightness",
     "tooltip": "",
@@ -582,18 +584,18 @@
     ],
     "payload": "",
     "topic": "",
-    "x": 620,
-    "y": 1920,
+    "x": 800,
+    "y": 880,
     "wires": [
       [
-        "f1ee72ff.563df"
+        "b8c73f2.7c8a2c"
       ]
     ]
   },
   {
-    "id": "81111f32.83575",
+    "id": "a4cc67ce.3c0dc8",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -605,19 +607,19 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 755,
-    "y": 1800,
+    "x": 935,
+    "y": 760,
     "wires": [
       [
-        "841e116a.7606f"
+        "bb400392.f07eb"
       ]
     ],
     "l": false
   },
   {
-    "id": "f5b3cdd.241403",
+    "id": "578466dd.9300d8",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -629,19 +631,19 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 675,
-    "y": 1860,
+    "x": 855,
+    "y": 820,
     "wires": [
       [
-        "187586ac.d7d789"
+        "74d32998.e2ca98"
       ]
     ],
     "l": false
   },
   {
-    "id": "f1ee72ff.563df",
+    "id": "b8c73f2.7c8a2c",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -653,19 +655,19 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 735,
-    "y": 1920,
+    "x": 915,
+    "y": 880,
     "wires": [
       [
-        "f632567a.58b738"
+        "bd8dacc1.b33c9"
       ]
     ],
     "l": false
   },
   {
-    "id": "8284fee.32d5",
+    "id": "7e717645.742958",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -677,19 +679,19 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 695,
-    "y": 1500,
+    "x": 875,
+    "y": 460,
     "wires": [
       [
-        "326dfdd6.927ea2"
+        "ff94d87c.da38c8"
       ]
     ],
     "l": false
   },
   {
-    "id": "da221c47.ee994",
+    "id": "2bb902bd.5cc2ce",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -701,19 +703,19 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 695,
-    "y": 1440,
+    "x": 875,
+    "y": 400,
     "wires": [
       [
-        "4d4a21c9.6f94"
+        "3b8b8bf.4063f74"
       ]
     ],
     "l": false
   },
   {
-    "id": "f82dfc54.575f9",
+    "id": "e1e78b68.7dc368",
     "type": "ui_switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "label": "Dry",
     "tooltip": "",
@@ -733,35 +735,35 @@
     "offvalueType": "bool",
     "officon": "",
     "offcolor": "",
-    "x": 590,
-    "y": 1980,
+    "x": 770,
+    "y": 940,
     "wires": [
       [
-        "f0e9eb11.f47e68"
+        "71ad5d7b.893e14"
       ]
     ]
   },
   {
-    "id": "80369f44.f2a63",
+    "id": "2d37c5cf.a51a4a",
     "type": "function",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "func": "var msgNew = {};\nmsgNew.payload = msg.status.dry=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
     "outputs": 1,
     "noerr": 0,
-    "x": 475,
-    "y": 1980,
+    "x": 655,
+    "y": 940,
     "wires": [
       [
-        "f82dfc54.575f9"
+        "e1e78b68.7dc368"
       ]
     ],
     "l": false
   },
   {
-    "id": "f0e9eb11.f47e68",
+    "id": "71ad5d7b.893e14",
     "type": "switch",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
     "property": "socketid",
     "propertyType": "msg",
@@ -773,122 +775,137 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 675,
-    "y": 1980,
+    "x": 855,
+    "y": 940,
     "wires": [
       [
-        "228d9a8.9b17a66"
+        "a9e68ecd.419f9"
       ]
     ],
     "l": false
   },
   {
-    "id": "4d4a21c9.6f94",
+    "id": "3b8b8bf.4063f74",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Power",
     "command": "set_power",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 990,
-    "y": 1440,
+    "x": 1170,
+    "y": 400,
     "wires": []
   },
   {
-    "id": "841e116a.7606f",
+    "id": "bb400392.f07eb",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Child Lock",
     "command": "set_child_lock",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 1010,
-    "y": 1800,
+    "x": 1190,
+    "y": 760,
     "wires": []
   },
   {
-    "id": "187586ac.d7d789",
+    "id": "74d32998.e2ca98",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Sound",
     "command": "set_buzzer",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 990,
-    "y": 1860,
+    "x": 1170,
+    "y": 820,
     "wires": []
   },
   {
-    "id": "228d9a8.9b17a66",
+    "id": "a9e68ecd.419f9",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Dry",
     "command": "set_dry",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 990,
-    "y": 1980,
+    "x": 1170,
+    "y": 940,
     "wires": []
   },
   {
-    "id": "f632567a.58b738",
+    "id": "bd8dacc1.b33c9",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Led Brightness",
     "command": "set_led_b",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 1020,
-    "y": 1920,
+    "x": 1200,
+    "y": 880,
     "wires": []
   },
   {
-    "id": "1b22f4ef.27fdfb",
+    "id": "177bba93.115c85",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Limit Humidity",
     "command": "set_limit_hum",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 1020,
-    "y": 1680,
+    "x": 1200,
+    "y": 640,
     "wires": []
   },
   {
-    "id": "326dfdd6.927ea2",
+    "id": "ff94d87c.da38c8",
     "type": "miio-humidifier-output",
-    "z": "3f1c4f24.8b18d",
+    "z": "a3b1c01f.659bb",
     "name": "",
-    "server": "ac5e3942.7fee18",
+    "server": "78040c8.acc89f4",
     "command_name": "Mode",
     "command": "set_mode",
     "commandType": "miio_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 990,
-    "y": 1500,
+    "x": 1170,
+    "y": 460,
     "wires": []
   },
   {
-    "id": "ac5e3942.7fee18",
+    "id": "373b5cba.078434",
+    "type": "miio-humidifier-output",
+    "z": "a3b1c01f.659bb",
+    "name": "",
+    "server": "62cd30be.c0e1",
+    "command_name": "homekit",
+    "command": "homekit",
+    "commandType": "homekit",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 1180,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "78040c8.acc89f4",
     "type": "miio-humidifier-server",
     "z": "",
     "name": "",
@@ -926,6 +943,15 @@
     "disp": true,
     "width": "8",
     "collapse": false
+  },
+  {
+    "id": "62cd30be.c0e1",
+    "type": "miio-humidifier-server",
+    "z": "",
+    "name": "",
+    "ip": "192.168.1.40",
+    "token": "9761f43db2f2cebf128bb81c1fb75ffd",
+    "polling": "10"
   },
   {
     "id": "988c3e1e.593ea",
