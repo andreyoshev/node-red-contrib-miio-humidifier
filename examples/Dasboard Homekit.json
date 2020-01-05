@@ -1,0 +1,939 @@
+[
+  {
+    "id": "2f41a631.e3751a",
+    "type": "miio-humidifier-input",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "outputAtStartup": true,
+    "for_homekit": true,
+    "x": 220,
+    "y": 1280,
+    "wires": [
+      [
+        "f1415426.662638",
+        "5554cd53.884264",
+        "a05c1eff.35cdb",
+        "77183309.60923c",
+        "c8b47573.74dc58",
+        "589e2256.4d3f3c",
+        "a25198d9.fb0928",
+        "388fe986.009fc6",
+        "ee2804b0.9758f8",
+        "d41d1abf.58ace8",
+        "7cef9b96.2f33e4",
+        "f84083f4.4d3a5",
+        "80369f44.f2a63"
+      ]
+    ]
+  },
+  {
+    "id": "5554cd53.884264",
+    "type": "homekit-service",
+    "z": "3f1c4f24.8b18d",
+    "isParent": true,
+    "bridge": "80c270f3.b5484",
+    "accessoryCategory": "AIR_HUMIDIFIER",
+    "parentService": "",
+    "name": "Humiditifier",
+    "serviceName": "HumidifierDehumidifier",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "characteristicProperties": "{\n\t\"Active\": {},\n\t\"CurrentRelativeHumidity\" : {},\n\t\"WaterLevel\": {},\n\t\"LockPhysicalControls\": {},\n\t\"SwingMode\": {},\n    \"CurrentHumidifierDehumidifierState\": {\n        \"validValues\": [0, 2]\n    },\n    \"TargetHumidifierDehumidifierState\": {\n        \"validValues\": [1]\n    }, \n    \"RelativeHumidityHumidifierThreshold\": {\n    \t\"minValue\": 0,\n        \"maxValue\": 100,\n        \"minStep\": 10\n    },\n    \"RotationSpeed\": {\n        \"minValue\": 0,\n         \"maxValue\": 100,\n         \"minStep\": 25\n    }\n}",
+    "x": 590,
+    "y": 1280,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "46628f71.6c633",
+    "type": "homekit-service",
+    "z": "3f1c4f24.8b18d",
+    "isParent": true,
+    "bridge": "80c270f3.b5484",
+    "accessoryCategory": "SENSOR",
+    "parentService": "",
+    "name": "Temperature",
+    "serviceName": "TemperatureSensor",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "characteristicProperties": "{}",
+    "x": 590,
+    "y": 1340,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "f1415426.662638",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = {\"CurrentTemperature\":(msg.status.temp_dec)/10};\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1340,
+    "wires": [
+      [
+        "46628f71.6c633"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "a05c1eff.35cdb",
+    "type": "debug",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 570,
+    "y": 1160,
+    "wires": []
+  },
+  {
+    "id": "65c949fa.3bf7d8",
+    "type": "ui_text",
+    "z": "3f1c4f24.8b18d",
+    "group": "569fc258.a9b43c",
+    "order": 7,
+    "width": 0,
+    "height": 0,
+    "name": "",
+    "label": "Temperature",
+    "format": "{{msg.payload}} °C",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 1560,
+    "wires": []
+  },
+  {
+    "id": "2b4d7a45.cd78b6",
+    "type": "ui_text",
+    "z": "3f1c4f24.8b18d",
+    "group": "569fc258.a9b43c",
+    "order": 5,
+    "width": "2",
+    "height": "1",
+    "name": "Humidity (value)",
+    "label": "",
+    "format": "{{msg.payload}} %",
+    "layout": "row-spread",
+    "x": 620,
+    "y": 1620,
+    "wires": []
+  },
+  {
+    "id": "e44d8555.aed5b8",
+    "type": "ui_numeric",
+    "z": "3f1c4f24.8b18d",
+    "name": "Limit humidity",
+    "label": "",
+    "tooltip": "Limit humidity",
+    "group": "569fc258.a9b43c",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "wrap": false,
+    "passthru": false,
+    "topic": "",
+    "format": "{{value}} %",
+    "min": "40",
+    "max": "80",
+    "step": "1",
+    "x": 620,
+    "y": 1680,
+    "wires": [
+      [
+        "960170b2.6dcec"
+      ]
+    ]
+  },
+  {
+    "id": "960170b2.6dcec",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 775,
+    "y": 1680,
+    "wires": [
+      [
+        "1b22f4ef.27fdfb"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "589e2256.4d3f3c",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = (msg.status.temp_dec/10).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload+'℃'});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1560,
+    "wires": [
+      [
+        "65c949fa.3bf7d8"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "a25198d9.fb0928",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.humidity;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1620,
+    "wires": [
+      [
+        "2b4d7a45.cd78b6"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "143b07de.d54528",
+    "type": "ui_text",
+    "z": "3f1c4f24.8b18d",
+    "group": "569fc258.a9b43c",
+    "order": 6,
+    "width": 0,
+    "height": 0,
+    "name": "",
+    "label": "Water Level",
+    "format": "{{msg.payload}} %",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 1740,
+    "wires": []
+  },
+  {
+    "id": "ee2804b0.9758f8",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = Math.round(msg.status.depth/1.2);\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1740,
+    "wires": [
+      [
+        "143b07de.d54528"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "388fe986.009fc6",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.limit_hum;\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload +'%'});\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1680,
+    "wires": [
+      [
+        "e44d8555.aed5b8"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "de28f611.40b7f8",
+    "type": "ui_text",
+    "z": "3f1c4f24.8b18d",
+    "group": "569fc258.a9b43c",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "name": "",
+    "label": "Humidity",
+    "format": "",
+    "layout": "row-spread",
+    "x": 800,
+    "y": 1620,
+    "wires": []
+  },
+  {
+    "id": "2d5b6998.caaf56",
+    "type": "ui_switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Power",
+    "tooltip": "",
+    "group": "569fc258.a9b43c",
+    "order": 1,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "decouple": "false",
+    "topic": "",
+    "style": "",
+    "onvalue": "true",
+    "onvalueType": "bool",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "false",
+    "offvalueType": "bool",
+    "officon": "",
+    "offcolor": "",
+    "x": 590,
+    "y": 1440,
+    "wires": [
+      [
+        "da221c47.ee994"
+      ]
+    ]
+  },
+  {
+    "id": "77183309.60923c",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.power=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1440,
+    "wires": [
+      [
+        "2d5b6998.caaf56"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "fc93094d.a46ac8",
+    "type": "ui_switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Child Lock",
+    "tooltip": "",
+    "group": "569fc258.a9b43c",
+    "order": 8,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "decouple": "false",
+    "topic": "",
+    "style": "",
+    "onvalue": "true",
+    "onvalueType": "bool",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "false",
+    "offvalueType": "bool",
+    "officon": "",
+    "offcolor": "",
+    "x": 610,
+    "y": 1800,
+    "wires": [
+      [
+        "81111f32.83575"
+      ]
+    ]
+  },
+  {
+    "id": "d41d1abf.58ace8",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.child_lock=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1800,
+    "wires": [
+      [
+        "fc93094d.a46ac8"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "a5379f1b.cdf99",
+    "type": "ui_dropdown",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Mode",
+    "tooltip": "",
+    "place": "--",
+    "group": "569fc258.a9b43c",
+    "order": 2,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "options": [
+      {
+        "label": "Auto",
+        "value": "auto",
+        "type": "str"
+      },
+      {
+        "label": "Минимум",
+        "value": "silent",
+        "type": "str"
+      },
+      {
+        "label": "Средний",
+        "value": "medium",
+        "type": "str"
+      },
+      {
+        "label": "Максимум",
+        "value": "high",
+        "type": "str"
+      }
+    ],
+    "payload": "",
+    "topic": "",
+    "x": 590,
+    "y": 1500,
+    "wires": [
+      [
+        "8284fee.32d5"
+      ]
+    ]
+  },
+  {
+    "id": "c8b47573.74dc58",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.mode;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1500,
+    "wires": [
+      [
+        "a5379f1b.cdf99"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "7e8da426.9e63cc",
+    "type": "ui_switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Sound",
+    "tooltip": "",
+    "group": "569fc258.a9b43c",
+    "order": 9,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "decouple": "false",
+    "topic": "",
+    "style": "",
+    "onvalue": "true",
+    "onvalueType": "bool",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "false",
+    "offvalueType": "bool",
+    "officon": "",
+    "offcolor": "",
+    "x": 590,
+    "y": 1860,
+    "wires": [
+      [
+        "f5b3cdd.241403"
+      ]
+    ]
+  },
+  {
+    "id": "7cef9b96.2f33e4",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.buzzer=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1860,
+    "wires": [
+      [
+        "7e8da426.9e63cc"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "f84083f4.4d3a5",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = parseInt(msg.status.led_b);\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1920,
+    "wires": [
+      [
+        "e053a4ca.19a9d8"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "e053a4ca.19a9d8",
+    "type": "ui_dropdown",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Led Brightness",
+    "tooltip": "",
+    "place": "--",
+    "group": "569fc258.a9b43c",
+    "order": 10,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "options": [
+      {
+        "label": "Макс",
+        "value": 0,
+        "type": "num"
+      },
+      {
+        "label": "Средний",
+        "value": 1,
+        "type": "num"
+      },
+      {
+        "label": "Выкл",
+        "value": 2,
+        "type": "num"
+      }
+    ],
+    "payload": "",
+    "topic": "",
+    "x": 620,
+    "y": 1920,
+    "wires": [
+      [
+        "f1ee72ff.563df"
+      ]
+    ]
+  },
+  {
+    "id": "81111f32.83575",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 755,
+    "y": 1800,
+    "wires": [
+      [
+        "841e116a.7606f"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "f5b3cdd.241403",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 675,
+    "y": 1860,
+    "wires": [
+      [
+        "187586ac.d7d789"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "f1ee72ff.563df",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 735,
+    "y": 1920,
+    "wires": [
+      [
+        "f632567a.58b738"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "8284fee.32d5",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 695,
+    "y": 1500,
+    "wires": [
+      [
+        "326dfdd6.927ea2"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "da221c47.ee994",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 695,
+    "y": 1440,
+    "wires": [
+      [
+        "4d4a21c9.6f94"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "f82dfc54.575f9",
+    "type": "ui_switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "label": "Dry",
+    "tooltip": "",
+    "group": "569fc258.a9b43c",
+    "order": 11,
+    "width": 0,
+    "height": 0,
+    "passthru": true,
+    "decouple": "false",
+    "topic": "",
+    "style": "",
+    "onvalue": "true",
+    "onvalueType": "bool",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "false",
+    "offvalueType": "bool",
+    "officon": "",
+    "offcolor": "",
+    "x": 590,
+    "y": 1980,
+    "wires": [
+      [
+        "f0e9eb11.f47e68"
+      ]
+    ]
+  },
+  {
+    "id": "80369f44.f2a63",
+    "type": "function",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "func": "var msgNew = {};\nmsgNew.payload = msg.status.dry=='on'?true:false;\n\nnode.status({fill:\"grey\",shape:\"dot\",text:msgNew.payload?'on':'off'});\n\nreturn msgNew;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 475,
+    "y": 1980,
+    "wires": [
+      [
+        "f82dfc54.575f9"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "f0e9eb11.f47e68",
+    "type": "switch",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "property": "socketid",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nnull"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 675,
+    "y": 1980,
+    "wires": [
+      [
+        "228d9a8.9b17a66"
+      ]
+    ],
+    "l": false
+  },
+  {
+    "id": "4d4a21c9.6f94",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Power",
+    "command": "set_power",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 990,
+    "y": 1440,
+    "wires": []
+  },
+  {
+    "id": "841e116a.7606f",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Child Lock",
+    "command": "set_child_lock",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 1010,
+    "y": 1800,
+    "wires": []
+  },
+  {
+    "id": "187586ac.d7d789",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Sound",
+    "command": "set_buzzer",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 990,
+    "y": 1860,
+    "wires": []
+  },
+  {
+    "id": "228d9a8.9b17a66",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Dry",
+    "command": "set_dry",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 990,
+    "y": 1980,
+    "wires": []
+  },
+  {
+    "id": "f632567a.58b738",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Led Brightness",
+    "command": "set_led_b",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 1020,
+    "y": 1920,
+    "wires": []
+  },
+  {
+    "id": "1b22f4ef.27fdfb",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Limit Humidity",
+    "command": "set_limit_hum",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 1020,
+    "y": 1680,
+    "wires": []
+  },
+  {
+    "id": "326dfdd6.927ea2",
+    "type": "miio-humidifier-output",
+    "z": "3f1c4f24.8b18d",
+    "name": "",
+    "server": "ac5e3942.7fee18",
+    "command_name": "Mode",
+    "command": "set_mode",
+    "commandType": "miio_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 990,
+    "y": 1500,
+    "wires": []
+  },
+  {
+    "id": "ac5e3942.7fee18",
+    "type": "miio-humidifier-server",
+    "z": "",
+    "name": "",
+    "ip": "192.168.1.40",
+    "token": "9761f43db2f2cebf128bb81c1fb75ffd",
+    "polling": "10"
+  },
+  {
+    "id": "80c270f3.b5484",
+    "type": "homekit-bridge",
+    "z": "",
+    "bridgeName": "MacTest2",
+    "pinCode": "111-11-111",
+    "port": "",
+    "allowInsecureRequest": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "customMdnsConfig": false,
+    "mdnsMulticast": true,
+    "mdnsInterface": "",
+    "mdnsPort": "",
+    "mdnsIp": "",
+    "mdnsTtl": "",
+    "mdnsLoopback": true,
+    "mdnsReuseAddr": true,
+    "allowMessagePassthrough": true
+  },
+  {
+    "id": "569fc258.a9b43c",
+    "type": "ui_group",
+    "z": "",
+    "name": "Test",
+    "tab": "988c3e1e.593ea",
+    "disp": true,
+    "width": "8",
+    "collapse": false
+  },
+  {
+    "id": "988c3e1e.593ea",
+    "type": "ui_tab",
+    "z": "",
+    "name": "Humiitifier",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  }
+]

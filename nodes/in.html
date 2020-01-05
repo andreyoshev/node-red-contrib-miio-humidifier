@@ -1,4 +1,6 @@
 <script type="text/x-red" data-template-name="miio-humidifier-input">
+    <link rel="stylesheet" href="miio-humidifier/static/css/common.css" type="text/css" />
+
     <div class="form-row">
         <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]placeholder.name">
@@ -28,7 +30,7 @@
                 value: ""
             },
             server: {
-                type: "miio-humiditifier-server",
+                type: "miio-humidifier-server",
                 required: true
             },
             outputAtStartup: {
@@ -42,7 +44,7 @@
         },
         inputs: 0,
         outputs: 1,
-        outputLabels: ["homekit"],
+        outputLabels: ["data"],
         paletteLabel: 'in',
         label: function () {
             return this.name || "Air Humidifier In";

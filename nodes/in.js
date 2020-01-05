@@ -1,8 +1,5 @@
 const miio = require('miio');
 
-// function isSet(value) {
-//     return typeof value !== 'undefined' && value != null;
-// }
 
 module.exports = function (RED) {
     class MiioHumidifierInput {
@@ -30,7 +27,7 @@ module.exports = function (RED) {
                 node.status({
                     fill: "red",
                     shape: "dot",
-                    text: "node-red-contrib-miio-humiditifier/in:status.server_node_error"
+                    text: "node-red-contrib-miio-humidifier/in:status.server_node_error"
                 });
             }
         }

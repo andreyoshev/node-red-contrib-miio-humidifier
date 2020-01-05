@@ -106,6 +106,6 @@ module.exports = function (RED) {
 
     }
 
-    RED.nodes.registerType('miio-humiditifier-server', ServerNode, {});
+    RED.nodes.registerType('miio-humidifier-server', ServerNode, {});
 };
 

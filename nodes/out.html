@@ -1,4 +1,5 @@
 <script type="text/x-red" data-template-name="miio-humidifier-output">
+    <link rel="stylesheet" href="miio-humidifier/static/css/common.css" type="text/css" />
     <div class="form-row">
         <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]placeholder.name">
@@ -6,6 +7,16 @@
     <div class="form-row">
         <label for="node-input-server" class="l-width"><i class="fa fa-globe"></i> <span data-i18n="label.server"></span></label>
         <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-command" class="l-width"><i class="fa fa-tasks"></i> <span data-i18n="label.command"></span></label>
+        <input type="text" id="node-input-command" style="width:70%">
+        <input type="hidden" id="node-input-commandType">
+    </div>
+	<div class="form-row">
+        <label for="node-input-payload" class="l-width"><i class="fa fa-envelope"></i> <span data-i18n="label.payload"></span></label>
+        <input type="text" id="node-input-payload" style="width:70%">
+        <input type="hidden" id="node-input-payloadType">
     </div>
 </script>
 
@@ -20,8 +31,23 @@
                 value: ""
             },
             server: {
-                type: "miio-humiditifier-server",
+                type: "miio-humidifier-server",
                 required: true
+            },
+            command_name: {
+                value: null
+            },
+            command: {
+                value: 'set_power',
+            },
+            commandType: {
+                value: 'miio_cmd',
+            },
+            payload: {
+                value: 'payload',
+            },
+            payloadType: {
+                value: 'msg',
             }
         },
         inputs: 1,
@@ -29,7 +55,116 @@
         outputLabels: ["state"],
         paletteLabel: 'out',
         label: function () {
-            return this.name || "Air Humidifier Out";
+            var label = 'Air Humidifier Out';
+            if (this.name) {
+                label = this.name;
+            } else if (typeof(this.command_name) == 'string' && this.command_name.length) {
+                label = this.command_name;
+            }
+            return label;
+        },
+        oneditprepare: function () {
+
+            var node = this;
+
+            var topicTypes = {
+                value: 'miio_cmd',
+                label: 'mi',
+                icon: 'icons/node-red-contrib-miio-humidifier/mi.png',
+                options: [
+                    {'value':'set_power', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_power")},
+                    {'value':'set_mode', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_mode")},
+                    {'value':'set_limit_hum', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_limit_hum")},
+                    {'value':'set_led_b', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_led_b")},
+                    {'value':'set_buzzer', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_buzzer")},
+                    {'value':'set_dry', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_dry")},
+                    {'value':'set_child_lock', 'label':RED._("node-red-contrib-miio-humidifier/out:commands.set_child_lock")}
+                ]
+            };
+            $('#node-input-command').typedInput({
+                types: [topicTypes, {value:'homekit',label:'homekit',icon: 'icons/node-red-contrib-miio-humidifier/homekit-logo.png',options:['homekit']}, 'str', 'msg', {value:'object',label:'object',options:['json']}],
+                default: 'msg',
+                value: 'topic',
+                typeField: $('#node-input-commandType'),
+            });
+
+            $('#node-input-device').on('change', function(type, value) {
+                $('#node-input-command').trigger('change');
+            });
+
+            $('#node-input-command').on('change', function(type, value) {
+                var val = $(this).val();
+                //chane options
+                var miioOptions = {};
+
+                if ('set_power' === val || 'set_child_lock' === val || 'set_dry' === val || 'set_buzzer' === val) {
+                    miioOptions =  [
+                        {'value':'on', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.on")},
+                        {'value':'off', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.off")}
+                    ];
+                } else if ('set_mode' === val) {
+                    miioOptions =  [
+                        {'value':'auto', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.auto")},
+                        {'value':'silent', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.silent")},
+                        {'value':'medium', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.medium")},
+                        {'value':'high', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.high")}
+                    ];
+                } else if ('set_led_b' === val) {
+                    miioOptions =  [
+                        {'value':'0', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.max")},
+                        {'value':'1', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.mid")},
+                        {'value':'2', 'label':RED._("node-red-contrib-miio-humidifier/out:arguments.none")}
+                    ];
+                } else if ('set_limit_hum' === val) {
+                    miioOptions =  [
+                        {'value':'40', 'label':'40%'},
+                        {'value':'45', 'label':'45%'},
+                        {'value':'50', 'label':'50%'},
+                        {'value':'55', 'label':'55%'},
+                        {'value':'60', 'label':'60%'},
+                        {'value':'65', 'label':'65%'},
+                        {'value':'70', 'label':'70%'},
+                        {'value':'75', 'label':'75%'},
+                        {'value':'80', 'label':'80%'}
+                    ];
+                }
+
+
+
+                if (miioOptions.length) {
+                    var payloadTypes = {
+                        value: 'miio_payload',
+                        label: 'mi',
+                        icon: 'icons/node-red-contrib-miio-humidifier/mi.png',
+                        options: miioOptions
+                    };
+                    $('#node-input-payload').typedInput('types', [payloadTypes, 'msg', 'flow', 'global', 'str', 'num']);
+                } else {
+                    $('#node-input-payload').typedInput('types', ['msg', 'flow', 'global', 'str', 'num']);
+                }
+            });
+
+
+            //init typedInput
+            var payloadTypes = {
+                value: 'miio_payload',
+                label: 'mi',
+                icon: 'icons/node-red-contrib-miio-humidifier/mi.png',
+                options: []
+            };
+            $('#node-input-payload').typedInput({
+                types: [payloadTypes, 'msg', 'flow', 'global', 'str', 'num'],
+                default: 'msg',
+                value: 'payload',
+                typeField: $('#node-input-payloadType'),
+            });
+            $('#node-input-commandType').val(node.commandType);
+            $('#node-input-payloadType').val(node.payloadType);
+        },
+        oneditsave: function () {
+            var commandCode = $('#node-input-command').val();
+            var commandLabel = $('.red-ui-typedInput-options [value='+commandCode+']').text();
+            this.command_name = commandLabel?commandLabel:null;
         }
     });
 </script>
