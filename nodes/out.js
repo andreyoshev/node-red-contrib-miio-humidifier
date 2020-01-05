@@ -93,11 +93,11 @@ module.exports = function (RED) {
 
                         break;
 
-                    case 'homekit_cmd':
+                    case 'homekit':
                         var fromHomekit = node.formatHomeKit(message, payload);
-                        if (fromHomekit && 'payload' in fromHomekit) {
-                            payload = fromHomekit['payload'];
-                            command = fromHomekit['command'];
+                        if (fromHomekit) {
+                            command = 'json';
+                            payload = fromHomekit;
                         } else {
                             payload = command = null;
                         }
@@ -182,34 +182,36 @@ module.exports = function (RED) {
                     } else if (value > 80 && value <= 100) {
                         value = 80;
                     }
-                    msg['command'] = 'set_limit_hum';
-                    msg['payload'] = value;
-                } else if (payload.Active !== undefined) {
-                    msg['command'] = 'set_power';
-                    msg['payload'] = [Boolean(value) ? "on" : "off"];
-                } else if (payload.SwingMode !== undefined) {
-                    msg['command'] = 'set_power';
-                    msg['payload'] = [Boolean(value) ? "on" : "off"];
-                } else if (payload.LockPhysicalControls !== undefined) {
-                    msg['command'] = 'set_child_lock';
-                    msg['payload'] = [Boolean(value) ? "on" : "off"];
 
+                    msg["set_limit_hum"] = value;
+                }
 
-                } else if (payload.RotationSpeed !== undefined) {
+                if (payload.Active !== undefined) {
+                    msg["set_power"] = Boolean(payload.Active) ? "on" : "off";
+                }
+
+                if (payload.SwingMode !== undefined) {
+                    msg["set_dry"] = Boolean(payload.SwingMode) ? "on" : "off";
+                }
+
+                if (payload.LockPhysicalControls !== undefined) {
+                    msg["set_child_lock"] = Boolean(payload.LockPhysicalControls) ? "on" : "off";
+                }
+
+                if (payload.RotationSpeed !== undefined) {
                     var value = payload.RotationSpeed;
-                    var payload = 'auto';
+                    var newVal = 'auto';
                     if (value <= 25) {
-                        payload = 'auto';
+                        newVal = 'auto';
                     } else if (value > 25 && value <= 50) {
-                        payload = 'silent';
+                        newVal = 'silent';
                     } else if (value > 50 && value <= 75) {
-                        payload = 'medium';
+                        newVal = 'medium';
                     } else if (value > 75) {
-                        payload = 'high';
+                        newVal = 'high';
                     }
 
-                    msg['command'] = 'set_mode';
-                    msg['payload'] = payload;
+                    msg["set_mode"] = newVal;
                 }
             }
 

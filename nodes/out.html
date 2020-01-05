@@ -162,9 +162,17 @@
             $('#node-input-payloadType').val(node.payloadType);
         },
         oneditsave: function () {
+
             var commandCode = $('#node-input-command').val();
-            var commandLabel = $('.red-ui-typedInput-options [value='+commandCode+']').text();
-            this.command_name = commandLabel?commandLabel:null;
+            var commandType = $('#node-input-commandType').val();
+            if (commandType == 'miio_cmd') {
+                var commandCode = $('#node-input-command').val();
+                var commandLabel = $('.red-ui-typedInput-options [value=' + commandCode + ']').text();
+                this.command_name = commandLabel?commandLabel:null;
+            } else {
+                this.command_name =  commandCode;
+            }
+
         }
     });
 </script>
