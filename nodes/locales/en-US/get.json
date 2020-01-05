@@ -10,6 +10,7 @@
     "status": {
         "server_node_error": "server node error",
         "received": "received",
-        "device_not_set": "no device"
+        "device_not_set": "no device",
+        "disconnected": "disconnected"
     }
 }

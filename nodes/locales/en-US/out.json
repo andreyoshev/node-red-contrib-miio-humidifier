@@ -11,7 +11,8 @@
     },
     "status": {
         "server_node_error": "server node error",
-        "error": "error"
+        "error": "error",
+        "disconnected": "disconnected"
     },
     "commands": {
         "set_power": "Power",

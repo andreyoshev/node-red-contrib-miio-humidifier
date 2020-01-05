@@ -17,7 +17,7 @@ module.exports = function (RED) {
                 // node.server.on('onClose', () => this.onClose());
                 node.server.on('onInitEnd', (status) => node.onInitEnd(status));
                 node.server.on('onStateChanged', (data, output) => node.onStateChanged(data, output));
-                node.server.on('onStateChangedError', (error) => node.onStateChangedError(error));
+                node.server.on('onConnectionError', (error) => node.onConnectionError(error));
 
 
                 if (node.config.outputAtStartup || node.config.for_homekit) {
@@ -40,17 +40,19 @@ module.exports = function (RED) {
         updateStatus() {
             var node = this;
 
-            var isOn = node.server.status.power === 'on';
-            var waterLevel = Math.ceil(node.server.status.depth / 1.2);
-            var mode = node.server.status.mode;
+            if (Object.keys(node.server.status).length) {
+                var isOn = node.server.status.power === 'on';
+                var waterLevel = Math.ceil(node.server.status.depth / 1.2);
+                var mode = node.server.status.mode;
 
-            var status = {
-                fill: waterLevel <= 15?"yellow":(isOn?"green":"red"),
-                shape: "dot",
-                text: (isOn?"On ("+mode+")":"Off") + ',  '+node.server.status.humidity+'%, '+(node.server.status.temp_dec/10).toFixed(1)+'℃' + ' 💧'+waterLevel
-            };
+                var status = {
+                    fill: waterLevel <= 15 ? "yellow" : (isOn ? "green" : "red"),
+                    shape: "dot",
+                    text: (isOn ? "On (" + mode + ")" : "Off") + ',  ' + node.server.status.humidity + '%, ' + (node.server.status.temp_dec / 10).toFixed(1) + '℃' + ' 💧' + waterLevel
+                };
 
-            node.status(status);
+                node.status(status);
+            }
         }
 
 
@@ -75,11 +77,15 @@ module.exports = function (RED) {
             }
         }
 
-        onStateChangedError(error) {
+        onConnectionError(error) {
             var node = this;
-            node.updateStatus();
+            var status = {
+                fill: "red",
+                shape: "dot",
+                text: "node-red-contrib-miio-humidifier/in:status.disconnected"
+            };
+            node.status(status);
         }
-
 
         formatHomeKit() {
             var node = this;

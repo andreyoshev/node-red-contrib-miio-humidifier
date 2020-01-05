@@ -13,6 +13,7 @@
     "status": {
         "server_node_error": "server node error",
         "on": "Вкл",
-        "off": "Выкл"
+        "off": "Выкл",
+        "disconnected": "disconnected"
     }
 }

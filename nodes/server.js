@@ -59,6 +59,7 @@ module.exports = function (RED) {
                     resolve(device);
 
                 }).catch(err => {
+                    node.emit('onConnectionError', err.message);
                     node.warn('Miio humiditifier Error: ' + err.message);
                     reject(err);
                 });

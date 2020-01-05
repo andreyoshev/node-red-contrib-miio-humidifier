@@ -127,6 +127,7 @@ module.exports = function (RED) {
 
 
             if (device === null) return false;
+            if (device === undefined) return false;
             if (command === null) return false;
             if (payload === undefined) payload = [];
             if (payload && typeof(payload) !== 'object') payload = [payload];

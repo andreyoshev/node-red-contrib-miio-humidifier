@@ -13,6 +13,7 @@
     "status": {
         "server_node_error": "ошибка устройства",
         "on": "Вкл",
-        "off": "Выкл"
+        "off": "Выкл",
+        "disconnected": "нет связи"
     }
 }
