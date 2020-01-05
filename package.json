@@ -19,8 +19,11 @@
   "node-red": {
     "nodes": {
       "in": "nodes/in.js",
-      "out": "nodes/out.js"
+      "out": "nodes/out.js",
+      "get": "nodes/get.js",
+      "server": "nodes/server.js",
+      "api": "api.js"
     }
   },
-  "version": "0.1.8"
+  "version": "0.9.0"
 }

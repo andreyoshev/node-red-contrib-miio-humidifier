@@ -1,0 +1,16 @@
+{
+    "label": {
+        "name": "Name",
+        "server": "Device"
+
+    },
+    "placeholder": {
+        "name": "Name"
+    },
+    "status": {
+        "server_node_error": "server node error",
+        "received": "received",
+        "device_not_set": "no device",
+        "disconnected": "disconnected"
+    }
+}

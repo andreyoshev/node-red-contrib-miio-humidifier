@@ -1,0 +1,15 @@
+{
+    "label": {
+        "name": "Название",
+        "server": "Устройство"
+    },
+    "placeholder": {
+        "name": "Название"
+    },
+    "status": {
+        "server_node_error": "ошибка устройства",
+        "received": "получено",
+        "device_not_set": "нет девайса",
+        "disconnected": "нет связи"
+    }
+}

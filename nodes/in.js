@@ -1,147 +1,171 @@
 const miio = require('miio');
 
-function isSet(value) {
-    return typeof value !== 'undefined' && value != null;
-}
 
 module.exports = function (RED) {
     class MiioHumidifierInput {
-        constructor(n) {
-            RED.nodes.createNode(this, n);
+        constructor(config) {
+            RED.nodes.createNode(this, config);
 
             var node = this;
-            node.config = n;
+            node.config = config;
+            node.cleanTimer = null;
+            node.connected = false;
+            node.status({}); //clean
 
-            node.setMaxListeners(255);
-            node.on('close', () => this.onClose());
+            //get server node
+            node.server = RED.nodes.getNode(node.config.server);
+            if (node.server) {
+                // node.server.on('onClose', () => this.onClose());
+                node.server.on('onInitEnd', (status) => node.onInitEnd(status));
+                node.server.on('onState', (status) => node.onStateChanged(status));
+                node.server.on('onStateChanged', (data, output) => node.onStateChanged(data, output));
+                node.server.on('onConnectionError', (error) => node.onConnectionError(error));
 
-            if (node.config.ip && node.config.token) {
-                node.connect().then(result => {
-                    node.getStatus(true).then(result => {
 
-                    });
-                });
-
-                node.refreshStatusTimer = setInterval(function () {
-                    node.getStatus(true);
-                }, 15000);
-            }
-        }
-
-        onClose() {
-            var that = this;
-
-            if (that.device) {
-                that.device.destroy();
-                that.device = null;
-            }
-        }
-
-        connect() {
-            var node = this;
-
-            return new Promise(function (resolve, reject) {
-                node.miio = miio.device({
-                    address: node.config.ip,
-                    token: node.config.token
-                }).then(device => {
-                    node.device = device;
-                    node.device.updateMaxPollFailures(0);
-
-                    node.device.on('thing:initialized', () => {
-                        node.log('Miio Humidifier: Initialized');
-                    });
-
-                    node.device.on('thing:destroyed', () => {
-                        node.log('Miio Humidifier: Destroyed');
-                    });
-
-                    resolve(device);
-                }).catch(err => {
-                    node.warn('Miio Humidifier Error: ' + err.message);
-                    reject(err);
-                });
-            });
-        }
-
-        getStatus(force = false) {
-            var node = this;
-
-            return new Promise(function (resolve, reject) {
-                if (force) {
-                    if (isSet(node.device)) {
-                        node.status({
-                            fill: "green",
-                            shape: "dot",
-                            text: "Connected."
-                        });
-
-                        node.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode"])
-                            .then(device => {
-                                node.send({
-                                    'payload': node.formatHomeKit(device)
-                                });
-                            }).catch(err => {
-                                console.log('Encountered an error while controlling device');
-                                console.log('Error(2) was:');
-                                console.log(err.message);
-                                node.connect();
-                                reject(err);
-                            });
-                    } else {
-                        node.status({
-                            fill: "red",
-                            shape: "dot",
-                            text: "Disconnected."
-                        });
-
-                        node.connect();
-                        reject('No device');
-                    }
-                } else {
-                    resolve();
+                if (node.config.outputAtStartup || node.config.for_homekit) {
+                    node.sendState();
                 }
-            });
+            } else {
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: "node-red-contrib-miio-humidifier/in:status.server_node_error"
+                });
+            }
         }
 
-        formatHomeKit(result) {
+        sendState() {
+            var node = this;
+            node.send({'payload':node.config.for_homekit?node.formatHomeKit():node.server.status, 'change': null, 'status': node.server.status});
+        }
+
+        updateStatus() {
+            var node = this;
+
+            if (Object.keys(node.server.status).length) {
+                var isOn = node.server.status.power === 'on';
+                var waterLevel = Math.ceil(node.server.status.depth / 1.2);
+                var mode = node.server.status.mode;
+
+                var status = {
+                    fill: waterLevel <= 15 ? "yellow" : (isOn ? "green" : "red"),
+                    shape: "dot",
+                    text: (isOn ? "On (" + mode + ")" : "Off") + ',  ' + node.server.status.humidity + '%, ' + (node.server.status.temp_dec / 10).toFixed(1) + '℃' + ' 💧' + waterLevel
+                };
+
+                node.status(status);
+            }
+        }
+
+
+        onInitEnd(status) {
+            var node = this;
+            node.connected = true;
+            node.updateStatus();
+
+            if (node.config.outputAtStartup || node.config.for_homekit) {
+                node.sendState();
+            }
+        }
+
+        onState(status) {
+            var node = this;
+
+            if (!node.connected) {
+                if (node.config.outputAtStartup || node.config.for_homekit) {
+                    node.sendState();
+                    node.updateStatus();
+                }
+            }
+
+            node.connected = true;
+        }
+
+        onStateChanged(data, output) {
+            var node = this;
+
+            if ("key" in data &&  ["power", "depth", "mode", "humidity", "temp_dec"].indexOf(data.key) >= 0) {
+                node.updateStatus();
+            }
+
+            if (output) {
+                node.send({'payload':node.config.for_homekit?node.formatHomeKit():data, 'change': data, 'status': node.server.status});
+            }
+        }
+
+        onConnectionError(error) {
+            var node = this;
+            node.connected = false;
+            var status = {
+                fill: "red",
+                shape: "dot",
+                text: "node-red-contrib-miio-humidifier/in:status.disconnected"
+            };
+            node.status(status);
+
+            if (node.config.for_homekit) {
+                node.send({
+                    'payload': node.formatHomeKitError(),
+                    'status': null,
+                    'error': error
+                });
+            }
+        }
+
+        formatHomeKit() {
+            var node = this;
+            var status = node.server.status;
             var msg = {};
 
-            if (result.power === "on") {
+            if (status.power === "on") {
                 msg.Active = 1;
                 msg.CurrentHumidifierDehumidifierState = 2;
-            } else if (result.power === "off") {
+            } else if (status.power === "off") {
                 msg.Active = 0;
                 msg.CurrentHumidifierDehumidifierState = 0;
             }
-            if (result.child_lock === "on") {
+            if (status.child_lock === "on") {
                 msg.LockPhysicalControls = 1;
-            } else if (result.child_lock === "off") {
+            } else if (status.child_lock === "off") {
                 msg.LockPhysicalControls = 0;
             }
-            if (result.dry === "on") {
+            if (status.dry === "on") {
                 msg.SwingMode = 1;
-            } else if (result.dry === "off") {
+            } else if (status.dry === "off") {
                 msg.SwingMode = 0;
             }
 
-            if (result.mode === "auto") {
+            if (status.mode === "auto") {
                 msg.RotationSpeed = 25;
-            } else if (result.mode === "silent") {
+            } else if (status.mode === "silent") {
                 msg.RotationSpeed = 50;
-            } else if (result.mode === "medium") {
+            } else if (status.mode === "medium") {
                 msg.RotationSpeed = 75;
-            } else if (result.mode === "high") {
+            } else if (status.mode === "high") {
                 msg.RotationSpeed = 100;
             } else {
                 msg.RotationSpeed = 0;
             }
 
-            msg.WaterLevel = Math.ceil(result.depth / 1.2);
-            msg.CurrentRelativeHumidity = result.humidity;
+            msg.WaterLevel = Math.ceil(status.depth / 1.2);
+            msg.CurrentRelativeHumidity = status.humidity;
             msg.TargetHumidifierDehumidifierState = 1;
-            msg.RelativeHumidityHumidifierThreshold = result.limit_hum;
+            msg.RelativeHumidityHumidifierThreshold = status.limit_hum;
 
+            return msg;
+        }
+
+        formatHomeKitError() {
+            var msg = {};
+            msg.Active = "NO_RESPONSE";
+            msg.CurrentHumidifierDehumidifierState = "NO_RESPONSE";
+            msg.LockPhysicalControls = "NO_RESPONSE";
+            msg.SwingMode = "NO_RESPONSE";
+            msg.RotationSpeed = "NO_RESPONSE";
+            msg.WaterLevel = "NO_RESPONSE";
+            msg.CurrentRelativeHumidity = "NO_RESPONSE";
+            msg.TargetHumidifierDehumidifierState = "NO_RESPONSE";
+            msg.RelativeHumidityHumidifierThreshold = "NO_RESPONSE";
             return msg;
         }
     }

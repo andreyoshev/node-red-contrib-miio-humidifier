@@ -1,0 +1,39 @@
+{
+    "label": {
+        "name": "Название",
+        "server": "Устройство",
+        "command": "Команда",
+        "payload": "Данные",
+        "options": "Параметры"
+    },
+    "placeholder": {
+        "name": "Название"
+    },
+    "status": {
+        "server_node_error": "ошибка устройства",
+        "error": "ошибка",
+        "disconnected": "нет связи"
+    },
+    "commands": {
+        "set_power": "Вкл/Выкл",
+        "set_mode": "Режим",
+        "set_limit_hum": "Предел влажности",
+        "set_led_b": "Подсветка (не работает)",
+        "set_buzzer": "Звук",
+        "set_dry": "Высушивание",
+        "set_child_lock": "Защита от детей"
+    },
+    "arguments": {
+        "on": "Вкл",
+        "off": "Выкл",
+        "max": "Макс",
+        "mid": "Среднее",
+        "none": "Выкл",
+        "auto": "Авто",
+        "silent": "Бесшумно",
+        "medium": "Средне",
+        "high": "Макс"
+    }
+}
+
+

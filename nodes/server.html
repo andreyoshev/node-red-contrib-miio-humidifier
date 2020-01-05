@@ -1,0 +1,45 @@
+<script type="text/x-red" data-template-name="miio-humidifier-server">
+    <link rel="stylesheet" href="miio-humidifier/static/css/common.css" type="text/css" />
+
+    <div class="form-row">
+        <label for="node-config-input-name" class="l-width"><i class="icon-bookmark"></i> <span data-i18n="label.name"></span></label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-ip" class="l-width"><i class="icon-globe"></i> <span data-i18n="label.ip_address"></span></label>
+        <input type="text" id="node-config-input-ip">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-token" class="l-width"><i class="icon-lock"></i> <span data-i18n="label.token"></span></label>
+        <input type="text" id="node-config-input-token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-polling" class="l-width"><i class="icon-time"></i> <span data-i18n="label.polling"></span></label>
+        <input type="text" id="node-config-input-polling">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('miio-humidifier-server',{
+        category: 'config',
+        defaults: {
+            name: {value: "", required: false},
+            ip: {value: "", required: true},
+            token: {value: "", required: true},
+            polling: {
+                value: 10,
+                required: true,
+                validate: function (value) {
+                    return value > 4;
+                }
+            },
+        },
+        label: function() {
+            return this.name || this.ip;
+        },
+        oneditprepare: function () {
+        },
+    });
+</script>
+
+

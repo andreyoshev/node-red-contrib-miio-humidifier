@@ -1,0 +1,10 @@
+{
+    "label": {
+        "name": "Name",
+        "ip_address": "IP-Address",
+        "token": "Token",
+        "settings": "Settings",
+        "find": "Find!",
+        "polling": "Polling, sec"
+    }
+}

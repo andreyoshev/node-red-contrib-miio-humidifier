@@ -1,9 +1,5 @@
 const miio = require('miio');
 
-function isSet(value) {
-    return typeof value !== 'undefined' && value != null;
-}
-
 module.exports = function (RED) {
     class MiioHumidifierOutput {
         constructor(config) {
@@ -11,130 +7,217 @@ module.exports = function (RED) {
 
             var node = this;
             node.config = config;
-            node.payload = config.payload;
+            node.cleanTimer = null;
 
-            node.connect();
+            //get server node
+            node.server = RED.nodes.getNode(node.config.server);
+            if (node.server) {
+                // node.server.on('onClose', () => this.onClose());
+                // node.server.on('onStateChanged', (data) => node.onStateChanged(data));
+                // node.server.on('onStateChangedError', (error) => node.onStateChangedError(error));
+            } else {
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: "node-red-contrib-miio-humidifier/out:status.server_node_error"
+                });
+            }
 
-            this.on('input', function (message) {
-                if (!isSet(node.device)) {
-                    console.log('No device');
-                    node.connect();
+            node.status({}); //clean
 
-                    node.status({
-                        fill: "red",
-                        shape: "dot",
-                        text: "No device."
-                    });
+            node.on('input', function(message) {
+                clearTimeout(node.cleanTimer);
 
-                    return;
+                var payload;
+                switch (node.config.payloadType) {
+                    case 'flow':
+                    case 'global': {
+                        RED.util.evaluateNodeProperty(node.config.payload, node.config.payloadType, this, message, function (error, result) {
+                            if (error) {
+                                node.error(error, message);
+                            } else {
+                                payload = result;
+                            }
+                        });
+                        break;
+                    }
+
+                    case 'num': {
+                        payload = parseInt(node.config.payload);
+                        break;
+                    }
+
+                    case 'str': {
+                        payload = node.config.payload;
+                        break;
+                    }
+
+                    case 'object': {
+                        payload = node.config.payload;
+                        break;
+                    }
+
+                    case 'miio_payload':
+                    case 'homekit':
+                    case 'msg':
+                    default: {
+                        payload = message[node.config.payload];
+                        break;
+                    }
                 }
 
-                var payload = message.payload;
+                var command;
+                switch (node.config.commandType) {
+                    case 'msg': {
+                        command = message[node.config.command];
+                        break;
+                    }
+                    case 'miio_cmd':
+                        command = node.config.command;
 
-                if (payload == null || payload == 'undefined') {
-                    return;
+                        switch (command) {
+                            case "set_power":
+                            case "set_buzzer":
+                            case "set_dry":
+                            case "set_child_lock":
+                                if (payload === 'on' || payload === 1 || payload === '1' || payload === true) payload = 'on';
+                                if (payload === 'off' || payload === 0 || payload === '0' || payload === false) payload = 'off';
+                                break;
+
+                            default: {
+                                break;
+                            }
+                        }
+
+
+
+                        break;
+
+                    case 'homekit':
+                        var fromHomekit = node.formatHomeKit(message, payload);
+                        if (fromHomekit) {
+                            command = 'json';
+                            payload = fromHomekit;
+                        } else {
+                            payload = command = null;
+                        }
+                        break;
+
+                    case 'str':
+                    default: {
+                        command = node.config.command;
+                        break;
+                    }
                 }
 
-                console.log(payload);
 
-                if (isSet(payload.RelativeHumidityHumidifierThreshold)) {
+                if (command === 'json') {
+                    for (var key in payload) {
+                        node.sendCommand(key, payload[key]);
+                    }
+                } else {
+                    node.sendCommand(command, payload);
+                }
+            });
+        }
+
+        sendCommand(command, payload) {
+            var node = this;
+            var device = node.server.device;
+
+
+            if (device === null) return false;
+            if (device === undefined) return false;
+            if (command === null) return false;
+            if (payload === undefined) payload = [];
+            if (payload && typeof(payload) !== 'object') payload = [payload];
+
+            // console.log('BEFORE SEND:');
+            // console.log({command:command,payload:payload});
+
+            return device.call(command, payload).then(result => {
+                var status = {
+                    fill: "green",
+                    shape: "dot",
+                    text: command
+                };
+
+                var sendPayload = result;
+                if (Object.keys(result).length === 1 && (typeof(result[0]) === 'string' || typeof(result[0]) === 'number')) {
+                    status.text += ': '+result[0];
+                    sendPayload = result[0];
+                }
+                node.status(status);
+                node.cleanTimer = setTimeout(function(){
+                    node.status({});
+                }, 3000);
+
+
+                node.send({request: {command: command, payload: payload}, payload: sendPayload});
+            }).catch(err => {
+                node.warn("Miio Humiditifier error on command '"+command+"': "+err.message);
+                node.send({request: {command: command, args: payload}, error: err});
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: "node-red-contrib-miio-humidifier/out:status.error"
+                });
+                node.cleanTimer = setTimeout(function(){
+                    node.status({});
+                }, 3000);
+            });
+        }
+
+        formatHomeKit(message, payload) {
+            if (message.hap.context === undefined) {
+                return null;
+            }
+
+            var msg = {};
+
+            if (Object.keys(payload).length) {
+                if (payload.RelativeHumidityHumidifierThreshold !== undefined) {
                     var value = payload.RelativeHumidityHumidifierThreshold;
                     if (value > 0 && value <= 40) {
                         value = 40;
                     } else if (value > 80 && value <= 100) {
                         value = 80;
                     }
-                    node.device.call("set_limit_hum", [value]);
+
+                    msg["set_limit_hum"] = value;
                 }
 
-                if (isSet(payload.Active)) {
-                    var value = payload.Active;
-                    node.device.call("set_power", [Boolean(value) ? "on" : "off"]);
+                if (payload.Active !== undefined) {
+                    msg["set_power"] = Boolean(payload.Active) ? "on" : "off";
                 }
 
-                if (isSet(payload.SwingMode)) {
-                    var value = payload.SwingMode;
-                    node.device.call("set_dry", [Boolean(value) ? "on" : "off"]);
+                if (payload.SwingMode !== undefined) {
+                    msg["set_dry"] = Boolean(payload.SwingMode) ? "on" : "off";
                 }
 
-                if (isSet(payload.LockPhysicalControls)) {
-                    var value = payload.LockPhysicalControls;
-                    node.device.call("set_child_lock", [Boolean(value) ? "on" : "off"]);
+                if (payload.LockPhysicalControls !== undefined) {
+                    msg["set_child_lock"] = Boolean(payload.LockPhysicalControls) ? "on" : "off";
                 }
 
-                if (isSet(payload.RotationSpeed)) {
+                if (payload.RotationSpeed !== undefined) {
                     var value = payload.RotationSpeed;
-                    if (value == 25) {
-                        node.device.call("set_mode", ["auto"]).then(result => {
-                            if (result[0] === "ok") {} else {
-                                console.log(new Error(result[0]));
-                            }
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-                    } else if (value == 50) {
-                        node.device.call("set_mode", ["silent"]).then(result => {
-                            if (result[0] === "ok") {} else {
-                                console.log(new Error(result[0]));
-                            }
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-                    } else if (value == 75) {
-                        node.device.call("set_mode", ["medium"]).then(result => {
-                            if (result[0] === "ok") {} else {
-                                console.log(new Error(result[0]));
-                            }
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-                    } else if (value == 100) {
-                        node.device.call("set_mode", ["high"]).then(result => {
-                            if (result[0] === "ok") {} else {
-                                console.log(new Error(result[0]));
-                            }
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
+                    var newVal = 'auto';
+                    if (value <= 25) {
+                        newVal = 'auto';
+                    } else if (value > 25 && value <= 50) {
+                        newVal = 'silent';
+                    } else if (value > 50 && value <= 75) {
+                        newVal = 'medium';
+                    } else if (value > 75) {
+                        newVal = 'high';
                     }
+
+                    msg["set_mode"] = newVal;
                 }
-            });
-        }
-
-        onClose() {
-            var that = this;
-
-            if (that.device) {
-                that.device.destroy();
-                that.device = null;
             }
-        }
 
-        connect() {
-            var node = this;
 
-            return new Promise(function (resolve, reject) {
-                node.miio = miio.device({
-                    address: node.config.ip,
-                    token: node.config.token
-                }).then(device => {
-                    node.device = device;
-                    node.device.updateMaxPollFailures(0);
-
-                    node.device.on('thing:initialized', () => {
-                        node.log('Miio Humidifier: Initialized');
-                    });
-
-                    node.device.on('thing:destroyed', () => {
-                        node.log('Miio Humidifier: Destroyed');
-                    });
-
-                    resolve(device);
-                }).catch(err => {
-                    node.warn('Miio Humidifier Error: ' + err.message);
-                    reject(err);
-                });
-            });
+            return msg;
         }
     }
 

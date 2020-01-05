@@ -1,0 +1,19 @@
+{
+    "label": {
+        "name": "Name",
+        "server": "Device",
+        "start_output": "Start Output",
+        "start_output_help": "Send state on start",
+        "for_homekit": "Homekit",
+        "for_homekit_help": "Format payload for homekit node"
+    },
+    "placeholder": {
+        "name": "Name"
+    },
+    "status": {
+        "server_node_error": "server node error",
+        "on": "Вкл",
+        "off": "Выкл",
+        "disconnected": "disconnected"
+    }
+}

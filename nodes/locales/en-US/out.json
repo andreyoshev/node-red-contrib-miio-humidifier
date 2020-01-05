@@ -1,0 +1,37 @@
+{
+    "label": {
+        "name": "Name",
+        "server": "Device",
+        "command": "Command",
+        "payload": "Payload",
+        "options": "Options"
+    },
+    "placeholder": {
+        "name": "Name"
+    },
+    "status": {
+        "server_node_error": "server node error",
+        "error": "error",
+        "disconnected": "disconnected"
+    },
+    "commands": {
+        "set_power": "Power",
+        "set_mode": "Mode",
+        "set_limit_hum": "Limit Humidity",
+        "set_led_b": "Led Brightness (doesn't work)",
+        "set_buzzer": "Sound",
+        "set_dry": "Dry",
+        "set_child_lock": "Child Lock"
+    },
+    "arguments": {
+        "on": "On",
+        "off": "Off",
+        "max": "Max",
+        "mid": "Mid",
+        "none": "None",
+        "auto": "Auto",
+        "silent": "Silent",
+        "medium": "Medium",
+        "high": "High"
+    }
+}

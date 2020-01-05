@@ -1,0 +1,18 @@
+<script type="text/x-red" data-help-name="miio-humidifier-input">
+    <p>Нода получает события от вашего девайса.</p>
+    <h3>Конфигурация</h3>
+    <dl class="message-properties">
+        <dt class="optional">Название <span class="property-type">string</span></dt><dd>Указать свое название для ноды</dd>
+        <dt>Устройство <span class="property-type">object</span></dt><dd>Выбрать устройство.</dd>
+        <dt class="optional">Начать вывод <span class="property-type">boolean</span></dt><dd>Отдавать данные при старте нод-реда</dd>
+        <dt class="optional">Homekit <span class="property-type">boolean</span></dt><dd>Форматирует msg.payload для homekit ноды, можно соединять напрямую.</dd>
+    </dl>
+
+    <h3>Выводы</h3>
+    <h5>Вывод 1</h5>
+    <dl class="message-properties">
+        <dt>msg.payload <span class="property-type">object</span></dt><dd>измененные данные</dd>
+        <dt>msg.status <span class="property-type">object</span></dt><dd>полный статус девайса</dd>
+    </dl>
+</script>
+

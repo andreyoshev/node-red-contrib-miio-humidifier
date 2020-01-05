@@ -1,0 +1,19 @@
+{
+    "label": {
+        "name": "Название",
+        "server": "Устройство",
+        "start_output": "Начать вывод",
+        "start_output_help": "Отправлять данные при запуске",
+        "for_homekit": "Homekit",
+        "for_homekit_help": "Форматировать payload для homekit ноды"
+    },
+    "placeholder": {
+        "name": "Название"
+    },
+    "status": {
+        "server_node_error": "ошибка устройства",
+        "on": "Вкл",
+        "off": "Выкл",
+        "disconnected": "нет связи"
+    }
+}
