@@ -9,6 +9,7 @@ module.exports = function (RED) {
             var node = this;
             node.config = config;
             node.cleanTimer = null;
+            node.connected = false;
             node.status({}); //clean
 
             //get server node
@@ -16,6 +17,7 @@ module.exports = function (RED) {
             if (node.server) {
                 // node.server.on('onClose', () => this.onClose());
                 node.server.on('onInitEnd', (status) => node.onInitEnd(status));
+                node.server.on('onState', (status) => node.onStateChanged(status));
                 node.server.on('onStateChanged', (data, output) => node.onStateChanged(data, output));
                 node.server.on('onConnectionError', (error) => node.onConnectionError(error));
 
@@ -58,11 +60,25 @@ module.exports = function (RED) {
 
         onInitEnd(status) {
             var node = this;
+            node.connected = true;
             node.updateStatus();
 
-            if (node.config.outputAtStartup) {
+            if (node.config.outputAtStartup || node.config.for_homekit) {
                 node.sendState();
             }
+        }
+
+        onState(status) {
+            var node = this;
+
+            if (!node.connected) {
+                if (node.config.outputAtStartup || node.config.for_homekit) {
+                    node.sendState();
+                    node.updateStatus();
+                }
+            }
+
+            node.connected = true;
         }
 
         onStateChanged(data, output) {
@@ -79,12 +95,21 @@ module.exports = function (RED) {
 
         onConnectionError(error) {
             var node = this;
+            node.connected = false;
             var status = {
                 fill: "red",
                 shape: "dot",
                 text: "node-red-contrib-miio-humidifier/in:status.disconnected"
             };
             node.status(status);
+
+            if (node.config.for_homekit) {
+                node.send({
+                    'payload': node.formatHomeKitError(),
+                    'status': null,
+                    'error': error
+                });
+            }
         }
 
         formatHomeKit() {
@@ -127,6 +152,20 @@ module.exports = function (RED) {
             msg.TargetHumidifierDehumidifierState = 1;
             msg.RelativeHumidityHumidifierThreshold = status.limit_hum;
 
+            return msg;
+        }
+
+        formatHomeKitError() {
+            var msg = {};
+            msg.Active = "NO_RESPONSE";
+            msg.CurrentHumidifierDehumidifierState = "NO_RESPONSE";
+            msg.LockPhysicalControls = "NO_RESPONSE";
+            msg.SwingMode = "NO_RESPONSE";
+            msg.RotationSpeed = "NO_RESPONSE";
+            msg.WaterLevel = "NO_RESPONSE";
+            msg.CurrentRelativeHumidity = "NO_RESPONSE";
+            msg.TargetHumidifierDehumidifierState = "NO_RESPONSE";
+            msg.RelativeHumidityHumidifierThreshold = "NO_RESPONSE";
             return msg;
         }
     }

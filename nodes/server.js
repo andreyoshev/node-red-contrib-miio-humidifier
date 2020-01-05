@@ -74,6 +74,8 @@ module.exports = function (RED) {
                     if (that.device !== null && that.device !== undefined) {
                         that.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode", 'buzzer', 'led_b', 'temp_dec']).then(result => {
 
+                            that.emit("onState", result);
+
                             for (var key in result) {
                                 var value = result[key];
                                 if (key in that.status) {
@@ -92,11 +94,15 @@ module.exports = function (RED) {
                             console.log('Encountered an error while controlling device');
                             console.log('Error(1) was:');
                             console.log(err.message);
+                            that.status = {};
+                            that.emit('onConnectionError', err.message);
                             reject(err);
                         });
 
                     } else {
                         that.connect();
+                        that.status = {};
+                        that.emit('onConnectionError', 'No device');
                         reject('No device');
                     }
                 } else {
