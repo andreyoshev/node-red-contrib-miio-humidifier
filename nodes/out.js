@@ -58,6 +58,9 @@ module.exports = function (RED) {
                     }
 
                     case 'miio_payload':
+                        payload = node.config.payload;
+                        break;
+
                     case 'homekit':
                     case 'msg':
                     default: {
