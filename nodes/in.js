@@ -50,7 +50,7 @@ module.exports = function (RED) {
                 var status = {
                     fill: waterLevel <= 15 ? "yellow" : (isOn ? "green" : "red"),
                     shape: "dot",
-                    text: (isOn ? "On (" + mode + ")" : "Off") + ',  ' + node.server.status.humidity + '%, ' + (node.server.status.temp_dec / 10).toFixed(1) + '℃' + ' 💧' + waterLevel
+                    text: (isOn ? "On (" + mode + ")" : "Off") + ',  ' + node.server.status.humidity + '%, ' + (!isNaN(parseFloat(node.server.status.temp_dec)) && isFinite(node.server.status.temp_dec)?(node.server.status.temp_dec / 10).toFixed(1) + '℃':'') + ' 💧' + waterLevel
                 };
 
                 node.status(status);
