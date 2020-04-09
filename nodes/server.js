@@ -72,7 +72,7 @@ module.exports = function (RED) {
             return new Promise(function (resolve, reject) {
                 if (force || !that.status) {
                     if (that.device !== null && that.device !== undefined) {
-                        that.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode", 'buzzer', 'led_b', 'temp_dec']).then(result => {
+                        that.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode", "buzzer", "led_b", "temp_dec"]).then(result => {
 
                             that.emit("onState", result);
 
@@ -81,11 +81,17 @@ module.exports = function (RED) {
                                 if (key in that.status) {
                                     if (!(key in that.status) || that.status[key] !== value) {
                                         that.status[key] = value;
-                                        that.emit("onStateChanged", {key: key, value: value}, true);
+                                        that.emit("onStateChanged", {
+                                            key: key,
+                                            value: value
+                                        }, true);
                                     }
                                 } else { //init: silent add
                                     that.status[key] = value;
-                                    that.emit("onStateChanged", {key: key, value: value}, false);
+                                    that.emit("onStateChanged", {
+                                        key: key,
+                                        value: value
+                                    }, false);
                                 }
                             }
 
@@ -115,4 +121,3 @@ module.exports = function (RED) {
 
     RED.nodes.registerType('miio-humidifier-server', ServerNode, {});
 };
-
