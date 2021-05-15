@@ -147,7 +147,7 @@ module.exports = function (RED) {
                 msg.RotationSpeed = 0;
             }
 
-            msg.WaterLevel = Math.ceil(status.depth / 1.2);
+            msg.WaterLevel = status.depth <= 120?Math.ceil(status.depth / 1.2):100;
             msg.CurrentRelativeHumidity = status.humidity;
             msg.TargetHumidifierDehumidifierState = 1;
             msg.RelativeHumidityHumidifierThreshold = status.limit_hum;
