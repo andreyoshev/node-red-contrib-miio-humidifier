@@ -72,7 +72,10 @@ module.exports = function (RED) {
             return new Promise(function (resolve, reject) {
                 if (force || !that.status) {
                     if (that.device !== null && that.device !== undefined) {
-                        that.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode", "buzzer", "led_b", "temp_dec"]).then(result => {
+                        that.device.loadProperties(["power", "humidity", "child_lock", "dry", "depth", "limit_hum", "mode", "buzzer", "led_b", "temp_dec", "temperature"]).then(result => {
+
+                            if (result.temp_dec == "null" && parseFloat(result.temperature))
+                                result.temp_dec = parseFloat(result.temperature) * 10; //fix temperature for zhimi.humidifier.cb1
 
                             that.emit("onState", result);
 
